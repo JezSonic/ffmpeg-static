@@ -421,11 +421,10 @@ if [ "$platform" = "linux" ]; then
   PKG_CONFIG_PATH="$TARGET_DIR/lib/pkgconfig" ./configure \
     --prefix="$TARGET_DIR" \
     --enable-shared \
-    --pkg-config-flags="--static" \
+    --pkg-config-flags="--shared" \
     --extra-cflags="-I$TARGET_DIR/include" \
     --extra-ldflags="-L$TARGET_DIR/lib" \
     --extra-libs="-lpthread -lm -lz" \
-    --extra-ldexeflags="-shared" \
     --bindir="$BIN_DIR" \
     --enable-pic \
     --enable-ffplay \
