@@ -312,21 +312,21 @@ cd $BUILD_DIR/lame*
 # The lame build script does not recognize aarch64, so need to set it manually
 uname -a | grep -q 'aarch64' && lame_build_target="--build=arm-linux" || lame_build_target=''
 [ $rebuild -eq 1 -a -f Makefile ] && make distclean || true
-[ ! -f config.status ] && ./configure --prefix=$TARGET_DIR --enable-nasm $lame_build_target
+[ ! -f config.status ] && ./configure --prefix=$TARGET_DIR --enable-nasm $lame_build_target --enable-shared
 make
 make install
 
 echo "*** Building opus ***"
 cd $BUILD_DIR/opus*
 [ $rebuild -eq 1 -a -f Makefile ] && make distclean || true
-[ ! -f config.status ] && ./configure --prefix=$TARGET_DIR
+[ ! -f config.status ] && ./configure --prefix=$TARGET_DIR --enable-shared
 make
 make install
 
 echo "*** Building libvpx ***"
 cd $BUILD_DIR/libvpx*
 [ $rebuild -eq 1 -a -f Makefile ] && make distclean || true
-[ ! -f config.status ] && PATH="$BIN_DIR:$PATH" ./configure --prefix=$TARGET_DIR --disable-examples --disable-unit-tests --enable-pic
+[ ! -f config.status ] && PATH="$BIN_DIR:$PATH" ./configure --prefix=$TARGET_DIR --disable-examples --disable-unit-tests --enable-pic --enable-shared
 PATH="$BIN_DIR:$PATH" make -j $jval
 make install
 
@@ -339,7 +339,7 @@ cd librtmp
 if [ "$platform" = "linux" ]; then
   sed -i "/INC=.*/d" ./Makefile # Remove INC if present from previous run.
   sed -i "s/prefix=.*/prefix=${TARGET_DIR_SED}\nINC=-I\$(prefix)\/include/" ./Makefile
-  sed -i "s/SHARED=.*/SHARED=no/" ./Makefile
+  sed -i "s/SHARED=.*/SHARED=yes/" ./Makefile
 elif [ "$platform" = "darwin" ]; then
   sed -i "" "s/prefix=.*/prefix=${TARGET_DIR_SED}/" ./Makefile
 fi
@@ -375,7 +375,7 @@ echo "*** Building zimg ***"
 cd $BUILD_DIR/zimg-release-*
 [ $rebuild -eq 1 -a -f Makefile ] && make distclean || true
 ./autogen.sh
-./configure --enable-static  --prefix=$TARGET_DIR --disable-shared
+./configure --disable-static  --prefix=$TARGET_DIR --enable-shared
 make -j $jval
 make install
 
@@ -383,7 +383,7 @@ echo "*** Building libwebp ***"
 cd $BUILD_DIR/libwebp*
 [ $rebuild -eq 1 -a -f Makefile ] && make distclean || true
 ./autogen.sh
-./configure --prefix=$TARGET_DIR
+./configure --prefix=$TARGET_DIR --enable-shared
 make -j $jval
 make install
 
@@ -391,7 +391,7 @@ echo "*** Building libvorbis ***"
 cd $BUILD_DIR/vorbis*
 [ $rebuild -eq 1 -a -f Makefile ] && make distclean || true
 ./autogen.sh
-./configure --prefix=$TARGET_DIR
+./configure --prefix=$TARGET_DIR --enable-shared
 make -j $jval
 make install
 
@@ -399,7 +399,7 @@ echo "*** Building libogg ***"
 cd $BUILD_DIR/ogg*
 [ $rebuild -eq 1 -a -f Makefile ] && make distclean || true
 ./autogen.sh
-./configure --prefix=$TARGET_DIR
+./configure --prefix=$TARGET_DIR --enable-shared
 make -j $jval
 make install
 
@@ -407,7 +407,7 @@ echo "*** Building libspeex ***"
 cd $BUILD_DIR/speex*
 [ $rebuild -eq 1 -a -f Makefile ] && make distclean || true
 ./autogen.sh
-./configure --prefix=$TARGET_DIR
+./configure --prefix=$TARGET_DIR --enable-shared
 make -j $jval
 make install
 
@@ -420,7 +420,8 @@ if [ "$platform" = "linux" ]; then
   [ ! -f config.status ] && PATH="$BIN_DIR:$PATH" \
   PKG_CONFIG_PATH="$TARGET_DIR/lib/pkgconfig" ./configure \
     --prefix="$TARGET_DIR" \
-    --pkg-config-flags="--shared" \
+    --enable-shared \
+    --pkg-config-flags="--static" \
     --extra-cflags="-I$TARGET_DIR/include" \
     --extra-ldflags="-L$TARGET_DIR/lib" \
     --extra-libs="-lpthread -lm -lz" \
@@ -464,7 +465,7 @@ elif [ "$platform" = "darwin" ]; then
     --pkg-config-flags="--static" \
     --extra-cflags="-I$TARGET_DIR/include" \
     --extra-ldflags="-L$TARGET_DIR/lib" \
-    --extra-ldexeflags="-Bstatic" \
+    --enable-shared \
     --enable-cross-compile \
     --bindir="$BIN_DIR" \
     --enable-pic \
