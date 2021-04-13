@@ -264,7 +264,7 @@ make install
 echo "*** Building x264 ***"
 cd $BUILD_DIR/x264*
 [ $rebuild -eq 1 -a -f Makefile ] && make distclean || true
-[ ! -f config.status ] && PATH="$BIN_DIR:$PATH" ./configure --prefix=$TARGET_DIR --enable-static --disable-shared --disable-opencl --enable-pic
+[ ! -f config.status ] && PATH="$BIN_DIR:$PATH" ./configure --prefix=$TARGET_DIR --disable-static --enable-shared --disable-opencl --enable-pic
 PATH="$BIN_DIR:$PATH" make -j $jval
 make install
 
@@ -272,7 +272,7 @@ echo "*** Building x265 ***"
 cd $BUILD_DIR/x265*
 cd build/linux
 [ $rebuild -eq 1 ] && find . -mindepth 1 ! -name 'make-Makefiles.bash' -and ! -name 'multilib.sh' -exec rm -r {} +
-PATH="$BIN_DIR:$PATH" cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX="$TARGET_DIR" -DENABLE_SHARED:BOOL=OFF -DSTATIC_LINK_CRT:BOOL=ON -DENABLE_CLI:BOOL=OFF ../../source
+PATH="$BIN_DIR:$PATH" cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX="$TARGET_DIR" -DENABLE_SHARED:BOOL=ON -DSTATIC_LINK_CRT:BOOL=ON -DENABLE_CLI:BOOL=OFF ../../source
 sed -i 's/-lgcc_s/-lgcc_eh/g' x265.pc
 make -j $jval
 make install
@@ -281,21 +281,21 @@ echo "*** Building fdk-aac ***"
 cd $BUILD_DIR/fdk-aac*
 [ $rebuild -eq 1 -a -f Makefile ] && make distclean || true
 autoreconf -fiv
-[ ! -f config.status ] && ./configure --prefix=$TARGET_DIR --disable-shared
+[ ! -f config.status ] && ./configure --prefix=$TARGET_DIR
 make -j $jval
 make install
 
 echo "*** Building harfbuzz ***"
 cd $BUILD_DIR/harfbuzz-*
 [ $rebuild -eq 1 -a -f Makefile ] && make distclean || true
-./configure --prefix=$TARGET_DIR --disable-shared --enable-static
+./configure --prefix=$TARGET_DIR --disable-static --enable-shared
 make -j $jval
 make install
 
 echo "*** Building fribidi ***"
 cd $BUILD_DIR/fribidi-*
 [ $rebuild -eq 1 -a -f Makefile ] && make distclean || true
-./configure --prefix=$TARGET_DIR --disable-shared --enable-static --disable-docs
+./configure --prefix=$TARGET_DIR --disable-static --enable-shared --disable-docs
 make -j $jval
 make install
 
@@ -303,7 +303,7 @@ echo "*** Building libass ***"
 cd $BUILD_DIR/libass-*
 [ $rebuild -eq 1 -a -f Makefile ] && make distclean || true
 ./autogen.sh
-./configure --prefix=$TARGET_DIR --disable-shared
+./configure --prefix=$TARGET_DIR
 make -j $jval
 make install
 
@@ -312,14 +312,14 @@ cd $BUILD_DIR/lame*
 # The lame build script does not recognize aarch64, so need to set it manually
 uname -a | grep -q 'aarch64' && lame_build_target="--build=arm-linux" || lame_build_target=''
 [ $rebuild -eq 1 -a -f Makefile ] && make distclean || true
-[ ! -f config.status ] && ./configure --prefix=$TARGET_DIR --enable-nasm --disable-shared $lame_build_target
+[ ! -f config.status ] && ./configure --prefix=$TARGET_DIR --enable-nasm $lame_build_target
 make
 make install
 
 echo "*** Building opus ***"
 cd $BUILD_DIR/opus*
 [ $rebuild -eq 1 -a -f Makefile ] && make distclean || true
-[ ! -f config.status ] && ./configure --prefix=$TARGET_DIR --disable-shared
+[ ! -f config.status ] && ./configure --prefix=$TARGET_DIR
 make
 make install
 
@@ -348,7 +348,7 @@ make install_base
 echo "*** Building libsoxr ***"
 cd $BUILD_DIR/soxr-*
 [ $rebuild -eq 1 -a -f Makefile ] && make distclean || true
-PATH="$BIN_DIR:$PATH" cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX="$TARGET_DIR" -DBUILD_SHARED_LIBS:bool=off -DWITH_OPENMP:bool=off -DBUILD_TESTS:bool=off
+PATH="$BIN_DIR:$PATH" cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX="$TARGET_DIR" -DBUILD_SHARED_LIBS:bool=on -DWITH_OPENMP:bool=off -DBUILD_TESTS:bool=off
 make -j $jval
 make install
 
@@ -360,14 +360,14 @@ if [ "$platform" = "linux" ]; then
 elif [ "$platform" = "darwin" ]; then
   sed -i "" "s/vidstab SHARED/vidstab STATIC/" ./CMakeLists.txt
 fi
-PATH="$BIN_DIR:$PATH" cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX="$TARGET_DIR"
+PATH="$BIN_DIR:$PATH" cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX="$TARGET_DIR" -DBUILD_SHARED_LIBS:bool=on
 make -j $jval
 make install
 
 echo "*** Building openjpeg ***"
 cd $BUILD_DIR/openjpeg-*
 [ $rebuild -eq 1 -a -f Makefile ] && make distclean || true
-PATH="$BIN_DIR:$PATH" cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX="$TARGET_DIR" -DBUILD_SHARED_LIBS:bool=off
+PATH="$BIN_DIR:$PATH" cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX="$TARGET_DIR" -DBUILD_SHARED_LIBS:bool=on
 make -j $jval
 make install
 
@@ -383,7 +383,7 @@ echo "*** Building libwebp ***"
 cd $BUILD_DIR/libwebp*
 [ $rebuild -eq 1 -a -f Makefile ] && make distclean || true
 ./autogen.sh
-./configure --prefix=$TARGET_DIR --disable-shared
+./configure --prefix=$TARGET_DIR
 make -j $jval
 make install
 
@@ -391,7 +391,7 @@ echo "*** Building libvorbis ***"
 cd $BUILD_DIR/vorbis*
 [ $rebuild -eq 1 -a -f Makefile ] && make distclean || true
 ./autogen.sh
-./configure --prefix=$TARGET_DIR --disable-shared
+./configure --prefix=$TARGET_DIR
 make -j $jval
 make install
 
@@ -399,7 +399,7 @@ echo "*** Building libogg ***"
 cd $BUILD_DIR/ogg*
 [ $rebuild -eq 1 -a -f Makefile ] && make distclean || true
 ./autogen.sh
-./configure --prefix=$TARGET_DIR --disable-shared
+./configure --prefix=$TARGET_DIR
 make -j $jval
 make install
 
@@ -407,7 +407,7 @@ echo "*** Building libspeex ***"
 cd $BUILD_DIR/speex*
 [ $rebuild -eq 1 -a -f Makefile ] && make distclean || true
 ./autogen.sh
-./configure --prefix=$TARGET_DIR --disable-shared
+./configure --prefix=$TARGET_DIR
 make -j $jval
 make install
 
@@ -420,11 +420,11 @@ if [ "$platform" = "linux" ]; then
   [ ! -f config.status ] && PATH="$BIN_DIR:$PATH" \
   PKG_CONFIG_PATH="$TARGET_DIR/lib/pkgconfig" ./configure \
     --prefix="$TARGET_DIR" \
-    --pkg-config-flags="--static" \
+    --pkg-config-flags="--shared" \
     --extra-cflags="-I$TARGET_DIR/include" \
     --extra-ldflags="-L$TARGET_DIR/lib" \
     --extra-libs="-lpthread -lm -lz" \
-    --extra-ldexeflags="-static" \
+    --extra-ldexeflags="-shared" \
     --bindir="$BIN_DIR" \
     --enable-pic \
     --enable-ffplay \
