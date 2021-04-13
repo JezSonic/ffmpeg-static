@@ -420,17 +420,16 @@ if [ "$platform" = "linux" ]; then
   [ ! -f config.status ] && PATH="$BIN_DIR:$PATH" \
   PKG_CONFIG_PATH="$TARGET_DIR/lib/pkgconfig" ./configure \
     --prefix="$TARGET_DIR" \
-    --enable-shared \
-    --pkg-config-flags="--shared" \
+    --enable-shared --disable-static --disable-programs \
+    --pkg-config-flags="--static" \
     --extra-cflags="-I$TARGET_DIR/include" \
     --extra-ldflags="-L$TARGET_DIR/lib" \
     --extra-libs="-lpthread -lm -lz" \
     --bindir="$BIN_DIR" \
     --enable-pic \
-    --enable-ffplay \
     --enable-fontconfig \
     --enable-frei0r \
-    --enable-gpl \
+    --disable-gpl --enable-opengl \
     --enable-version3 \
     --enable-libass \
     --enable-libfribidi \
