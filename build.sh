@@ -465,6 +465,7 @@ elif [ "$platform" = "darwin" ]; then
     --extra-cflags="-I$TARGET_DIR/include" \
     --extra-ldflags="-L$TARGET_DIR/lib" \
     --extra-ldexeflags="-Bstatic" \
+    --enable-cross-compile \
     --bindir="$BIN_DIR" \
     --enable-pic \
     --enable-ffplay \
