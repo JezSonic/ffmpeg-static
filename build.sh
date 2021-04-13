@@ -429,7 +429,7 @@ if [ "$platform" = "linux" ]; then
     --enable-pic \
     --enable-fontconfig \
     --enable-frei0r \
-    --disable-gpl --enable-opengl \
+    --enable-gpl --enable-opengl \
     --enable-version3 \
     --enable-libass \
     --enable-libfribidi \
