@@ -3,11 +3,6 @@
 set -e
 set -u
 
-arch=x86_64
-cctriplet=$arch-w64-mingw32
-targetos=mingw32
-crossprefix=$cctriplet-
-
 jflag=
 jval=2
 rebuild=0
@@ -425,9 +420,6 @@ if [ "$platform" = "linux" ]; then
   [ ! -f config.status ] && PATH="$BIN_DIR:$PATH" \
   PKG_CONFIG_PATH="$TARGET_DIR/lib/pkgconfig" ./configure \
     --prefix="$TARGET_DIR" \
-    --arch=$arch \
-    --target-os=$targetos \
-    --cross-prefix=$crossprefix \
     --enable-shared --disable-static --disable-programs \
     --pkg-config-flags="--static" \
     --extra-cflags="-I$TARGET_DIR/include" \
@@ -468,9 +460,6 @@ elif [ "$platform" = "darwin" ]; then
   PKG_CONFIG_PATH="${TARGET_DIR}/lib/pkgconfig:/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig:/usr/local/Cellar/openssl/1.0.2o_1/lib/pkgconfig" ./configure \
     --cc=/usr/bin/clang \
     --prefix="$TARGET_DIR" \
-    --arch=$arch \
-    --target-os=$targetos \
-    --cross-prefix=$crossprefix \
     --enable-shared --disable-static --disable-programs \
     --pkg-config-flags="--static" \
     --extra-cflags="-I$TARGET_DIR/include" \
