@@ -44,5 +44,29 @@ jobs:
           name: bin-linux
          # A file, directory or wildcard pattern that describes what to upload
           path: ./bin/
-        
-      
+  build-windows:
+    runs-on: windows-latest
+    steps:
+       - uses: actions/checkout@v2
+       - name: Install Cygwin
+          # You may pin to the exact commit or the version.
+          # uses: egor-tensin/setup-cygwin@4f96f9fecb8c952fa32ff791b0a77d93d5191bb4
+         uses: egor-tensin/setup-cygwin@v3
+       - name: install-cmake
+         uses: Symbitic/install-cmake@v0.1.0
+       - name: build
+         run: build.sh
+       - name: Upload a Build Artifact
+         uses: actions/upload-artifact@v2.2.3
+         with:
+         # Artifact name
+           name: target-linux
+         # A file, directory or wildcard pattern that describes what to upload
+           path: ./target/
+       - name: Upload a Build Artifact
+         uses: actions/upload-artifact@v2.2.3
+         with:
+          # Artifact name
+           name: bin-linux
+          # A file, directory or wildcard pattern that describes what to upload
+           path: ./bin/
