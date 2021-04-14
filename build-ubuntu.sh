@@ -29,7 +29,9 @@ sudo apt-get -y --force-yes install \
   pkg-config \
   texi2html \
   zlib1g-dev \
-  mingw-w64-tools
+  mingw-w64-tools \
+  gcc-mingw-w64 \
+  mingw-w64
 
 # For 12.04
 # libx265 requires cmake version >= 2.8.8
