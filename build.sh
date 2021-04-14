@@ -6,7 +6,7 @@ set -u
 arch=x86_64
 cctriplet=$arch-w64-mingw32
 targetos=mingw32
-crossprefix=$cc_triplet-
+crossprefix=$cctriplet-
 
 jflag=
 jval=2
